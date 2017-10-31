@@ -51,7 +51,7 @@ public class MultiAsyncApplication {
 
     @Bean
     public Executor statisticExecutor() {
-        final ThreadPoolTaskExecutor executor = new JmxThreadPoolTaskExecutor();
+        final ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
         executor.setCorePoolSize(2);
         executor.setMaxPoolSize(5);
         executor.setQueueCapacity(500);

@@ -50,7 +50,6 @@ public class JmxThreadPoolTaskExecutor extends ThreadPoolTaskExecutor {
         super.setQueueCapacity(queueCapacity);
     }
 
-
     @ManagedAttribute
     public int getActiveCount() {
         return super.getActiveCount();
