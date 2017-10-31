@@ -10,6 +10,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.jmx.export.annotation.ManagedResource;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
@@ -50,7 +51,7 @@ public class MultiAsyncApplication {
 
     @Bean
     public Executor statisticExecutor() {
-        final ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
+        final ThreadPoolTaskExecutor executor = new JmxThreadPoolTaskExecutor();
         executor.setCorePoolSize(2);
         executor.setMaxPoolSize(5);
         executor.setQueueCapacity(500);
@@ -61,7 +62,7 @@ public class MultiAsyncApplication {
 
     @Bean
     public Executor mailExecutor() {
-        final ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
+        final ThreadPoolTaskExecutor executor = new JmxThreadPoolTaskExecutor();
         executor.setCorePoolSize(2);
         executor.setMaxPoolSize(5);
         executor.setQueueCapacity(100);
@@ -79,8 +80,6 @@ class StatisticController {
     @Autowired
     private StatisticService service;
 
-
-    
     @GetMapping("/statistic/{personId}")
     public ResponseEntity<String> statistic(@PathVariable Long personId) {
         try {
@@ -141,7 +140,6 @@ class MailService {
         LOG.info("Begin send statistic of person {}", personId);
         try {
             //This is example for delay of sending email
-
             TimeUnit.MILLISECONDS.sleep(2000);
         } catch (InterruptedException e) {
             LOG.debug("Oops! just error when sleep.");
@@ -149,6 +147,7 @@ class MailService {
         LOG.info("Process send statistic of person {} completed", personId);
     }
 }
+
 @Repository
 interface PersonRepository extends CrudRepository<Person, Long> {
 }
