@@ -7,8 +7,6 @@ import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 @ManagedResource
 public class JmxThreadPoolTaskExecutor extends ThreadPoolTaskExecutor {
 
-    private int queueCapacity = Integer.MAX_VALUE;
-
     @ManagedAttribute
     public int getCorePoolSize() {
         return super.getCorePoolSize();
@@ -41,12 +39,11 @@ public class JmxThreadPoolTaskExecutor extends ThreadPoolTaskExecutor {
 
     @ManagedAttribute
     public int getQueueCapacity() {
-        return queueCapacity;
+        return this.getThreadPoolExecutor().getQueue().size();
     }
 
     @ManagedAttribute
     public void setQueueCapacity(int queueCapacity) {
-        this.queueCapacity = queueCapacity;
         super.setQueueCapacity(queueCapacity);
     }
 
