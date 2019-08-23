@@ -117,7 +117,7 @@ class StatisticService {
     }
 
     private void now(final Long personId) {
-        Person person = this.repository.findOne(personId);
+        Person person = this.repository.findById(personId).orElse(null);
         if (person != null) {
             Long statistic = person.getStatistic();
             if (statistic == null) {
